@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RequestAutoImport = exports.getDefaultConfig = exports.onBeforeRequest = exports.defineDefaultConfig = exports.getInput = exports.request = exports.beforeRequest = exports.defaultConfig = void 0;
+exports.requestAutoImport = exports.getDefaultConfig = exports.onBeforeRequest = exports.defineDefaultConfig = exports.getInput = exports.request = exports.beforeRequest = exports.defaultConfig = void 0;
 function request(input, config, type) {
     const currentConfig = Object.assign(Object.assign({}, getDefaultConfig()), config);
     // onBeforeRequest hook is used for like default headers setting.
@@ -91,7 +91,7 @@ function getDefaultConfig() {
 }
 exports.getDefaultConfig = getDefaultConfig;
 /** RequestResolver for unplugin-auto-import */
-exports.RequestAutoImport = {
+exports.requestAutoImport = {
     '@oasis-end/request': [
         'defaultConfig',
         'beforeRequest',

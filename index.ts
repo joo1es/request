@@ -98,7 +98,7 @@ export function getDefaultConfig() {
 }
 
 /** RequestResolver for unplugin-auto-import */
-export const RequestAutoImport = {
+export const requestAutoImport = {
     '@oasis-end/request': [
         'defaultConfig',
         'beforeRequest',

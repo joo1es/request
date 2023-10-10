@@ -14,6 +14,6 @@ export declare function defineDefaultConfig(config: RequestConfig | (() => Reque
 export declare function onBeforeRequest(func: (config: RequestConfig) => void): void;
 export declare function getDefaultConfig(): RequestConfig;
 /** RequestResolver for unplugin-auto-import */
-export declare const RequestAutoImport: {
+export declare const requestAutoImport: {
     '@oasis-end/request': string[];
 };

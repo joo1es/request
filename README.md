@@ -28,10 +28,10 @@ onBeforeRequest(config => {
 #### Use with unplugin-auto-import
 
 ```typescript
-import { RequestAutoImport } from '@oasis-end/request'
+import { requestAutoImport } from '@oasis-end/request'
 
 AutoImport({
-    imports: [ RequestAutoImport ]
+    imports: [ requestAutoImport ]
 })
 ```
 
