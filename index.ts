@@ -52,27 +52,6 @@ export function request<T extends RequestJsonResponse<any>, U extends 'blob' | '
         })
 }
 
-request.get = (...args: Parameters<typeof request>) => {
-    args[1] = { ...(args[1] || {}), method: 'get' } as RequestConfig
-    return request(...args)
-}
-request.post = (...args: Parameters<typeof request>) => {
-    args[1] = { ...(args[1] || {}), method: 'post' } as RequestConfig
-    return request(...args)
-}
-request.put = (...args: Parameters<typeof request>) => {
-    args[1] = { ...(args[1] || {}), method: 'put' } as RequestConfig
-    return request(...args)
-}
-request.delete = (...args: Parameters<typeof request>) => {
-    args[1] = { ...(args[1] || {}), method: 'delete' } as RequestConfig
-    return request(...args)
-}
-request.patch = (...args: Parameters<typeof request>) => {
-    args[1] = { ...(args[1] || {}), method: 'patch' } as RequestConfig
-    return request(...args)
-}
-
 /**
  * Handle input url with config
  */
