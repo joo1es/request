@@ -15,31 +15,7 @@ export function request<T extends any, U extends 'blob' | 'json' | 'arrayBuffer'
     // onBeforeRequest hook is used for like default headers setting.
     if (beforeRequest) beforeRequest(currentConfig)
 
-    /**
-     * Handle input url
-     */
-    let inputResult = input
-    // Add baseUrl for url
-    if (typeof inputResult === 'string') inputResult = `${currentConfig?.baseUrl || ''}${inputResult}`
-    if (inputResult instanceof URL) inputResult = inputResult.toString()
-    if (currentConfig.params && typeof inputResult === 'string') {
-        let query = ''
-        if (typeof currentConfig.params === 'string') {
-            if (currentConfig.params.startsWith('?')) {
-                query = currentConfig.params.slice(1)
-            } else {
-                query = currentConfig.params
-            }
-        } else {
-            query = Object.entries(currentConfig.params).map(([key, param]) => {
-                return `${key}=${param}`
-            }).join('&')
-        }
-        if (query) {
-            const extraSymbol = inputResult.includes('?') ? '&' : '?'
-            inputResult += `${extraSymbol}${query}`
-        }
-    }
+    const inputResult = getInput(input, currentConfig)
 
     // body and data trans
     if (!currentConfig.body && currentConfig.data) {
@@ -68,6 +44,35 @@ export function request<T extends any, U extends 'blob' | 'json' | 'arrayBuffer'
         .catch(err => {
             currentConfig.error?.(err)
         })
+}
+
+/**
+ * Handle input url with config
+ */
+export function getInput(input: RequestInfo | URL, currentConfig: RequestConfig) {
+    let inputResult = input
+    // Add baseUrl for url
+    if (typeof inputResult === 'string') inputResult = `${currentConfig?.baseUrl || ''}${inputResult}`
+    if (inputResult instanceof URL) inputResult = inputResult.toString()
+    if (currentConfig.params && typeof inputResult === 'string') {
+        let query = ''
+        if (typeof currentConfig.params === 'string') {
+            if (currentConfig.params.startsWith('?')) {
+                query = currentConfig.params.slice(1)
+            } else {
+                query = currentConfig.params
+            }
+        } else {
+            query = Object.entries(currentConfig.params).map(([key, param]) => {
+                return `${key}=${param}`
+            }).join('&')
+        }
+        if (query) {
+            const extraSymbol = inputResult.includes('?') ? '&' : '?'
+            inputResult += `${extraSymbol}${query}`
+        }
+    }
+    return inputResult
 }
 
 export function defineDefaultConfig(config: RequestConfig | (() => RequestConfig)) {

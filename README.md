@@ -1,1 +1,1 @@
-This is a lightweight whitch base on "fetch" request library.
+This is a lightweight which bases on "fetch" request library.

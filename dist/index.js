@@ -1,40 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDefaultConfig = exports.onBeforeRequest = exports.defineDefaultConfig = exports.request = exports.beforeRequest = exports.defaultConfig = void 0;
+exports.getDefaultConfig = exports.onBeforeRequest = exports.defineDefaultConfig = exports.getInput = exports.request = exports.beforeRequest = exports.defaultConfig = void 0;
 function request(input, config, type) {
     const currentConfig = Object.assign(Object.assign({}, getDefaultConfig()), config);
     // onBeforeRequest hook is used for like default headers setting.
     if (exports.beforeRequest)
         (0, exports.beforeRequest)(currentConfig);
-    /**
-     * Handle input url
-     */
-    let inputResult = input;
-    // Add baseUrl for url
-    if (typeof inputResult === 'string')
-        inputResult = `${(currentConfig === null || currentConfig === void 0 ? void 0 : currentConfig.baseUrl) || ''}${inputResult}`;
-    if (inputResult instanceof URL)
-        inputResult = inputResult.toString();
-    if (currentConfig.params && typeof inputResult === 'string') {
-        let query = '';
-        if (typeof currentConfig.params === 'string') {
-            if (currentConfig.params.startsWith('?')) {
-                query = currentConfig.params.slice(1);
-            }
-            else {
-                query = currentConfig.params;
-            }
-        }
-        else {
-            query = Object.entries(currentConfig.params).map(([key, param]) => {
-                return `${key}=${param}`;
-            }).join('&');
-        }
-        if (query) {
-            const extraSymbol = inputResult.includes('?') ? '&' : '?';
-            inputResult += `${extraSymbol}${query}`;
-        }
-    }
+    const inputResult = getInput(input, currentConfig);
     // body and data trans
     if (!currentConfig.body && currentConfig.data) {
         if (currentConfig.data instanceof FormData || typeof currentConfig.data === 'string') {
@@ -67,6 +39,39 @@ function request(input, config, type) {
     });
 }
 exports.request = request;
+/**
+ * Handle input url with config
+ */
+function getInput(input, currentConfig) {
+    let inputResult = input;
+    // Add baseUrl for url
+    if (typeof inputResult === 'string')
+        inputResult = `${(currentConfig === null || currentConfig === void 0 ? void 0 : currentConfig.baseUrl) || ''}${inputResult}`;
+    if (inputResult instanceof URL)
+        inputResult = inputResult.toString();
+    if (currentConfig.params && typeof inputResult === 'string') {
+        let query = '';
+        if (typeof currentConfig.params === 'string') {
+            if (currentConfig.params.startsWith('?')) {
+                query = currentConfig.params.slice(1);
+            }
+            else {
+                query = currentConfig.params;
+            }
+        }
+        else {
+            query = Object.entries(currentConfig.params).map(([key, param]) => {
+                return `${key}=${param}`;
+            }).join('&');
+        }
+        if (query) {
+            const extraSymbol = inputResult.includes('?') ? '&' : '?';
+            inputResult += `${extraSymbol}${query}`;
+        }
+    }
+    return inputResult;
+}
+exports.getInput = getInput;
 function defineDefaultConfig(config) {
     exports.defaultConfig = config;
 }
