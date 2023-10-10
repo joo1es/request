@@ -41,24 +41,24 @@ function request(input, config, type) {
 }
 exports.request = request;
 request.get = (...args) => {
-    const config = Object.assign(Object.assign({}, (args[1] || {})), { method: 'get' });
-    return request(args[0], config);
+    args[1] = Object.assign(Object.assign({}, (args[1] || {})), { method: 'get' });
+    return request(...args);
 };
 request.post = (...args) => {
-    const config = Object.assign(Object.assign({}, (args[1] || {})), { method: 'post' });
-    return request(args[0], config);
+    args[1] = Object.assign(Object.assign({}, (args[1] || {})), { method: 'post' });
+    return request(...args);
 };
 request.put = (...args) => {
-    const config = Object.assign(Object.assign({}, (args[1] || {})), { method: 'put' });
-    return request(args[0], config);
+    args[1] = Object.assign(Object.assign({}, (args[1] || {})), { method: 'put' });
+    return request(...args);
 };
 request.delete = (...args) => {
-    const config = Object.assign(Object.assign({}, (args[1] || {})), { method: 'delete' });
-    return request(args[0], config);
+    args[1] = Object.assign(Object.assign({}, (args[1] || {})), { method: 'delete' });
+    return request(...args);
 };
 request.patch = (...args) => {
-    const config = Object.assign(Object.assign({}, (args[1] || {})), { method: 'patch' });
-    return request(args[0], config);
+    args[1] = Object.assign(Object.assign({}, (args[1] || {})), { method: 'patch' });
+    return request(...args);
 };
 /**
  * Handle input url with config
