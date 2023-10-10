@@ -1,0 +1,15 @@
+{
+  "name": "@oasis-end/request",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "test"
+  },
+  "author": "jooies",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
+}
