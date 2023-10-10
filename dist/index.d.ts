@@ -9,3 +9,7 @@ export declare function getInput(input: RequestInfo | URL, currentConfig: Reques
 export declare function defineDefaultConfig(config: RequestConfig | (() => RequestConfig)): void;
 export declare function onBeforeRequest(func: (config: RequestConfig) => void): void;
 export declare function getDefaultConfig(): RequestConfig;
+/** RequestResolver for unplugin-auto-import */
+export declare const RequestAutoImport: {
+    '@oasis-end/request': string[];
+};
