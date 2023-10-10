@@ -35,7 +35,7 @@ export function request<T extends any, U extends 'blob' | 'json' | 'arrayBuffer'
                 if (!currentConfig.success || currentConfig.success(res)) {
                     return res
                 } else {
-                    throw new Error(res)
+                    throw res
                 }
             } else {
                 return res
@@ -43,6 +43,7 @@ export function request<T extends any, U extends 'blob' | 'json' | 'arrayBuffer'
         })
         .catch(err => {
             currentConfig.error?.(err)
+            throw err
         })
 }
 

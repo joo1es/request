@@ -26,7 +26,7 @@ function request(input, config, type) {
                 return res;
             }
             else {
-                throw new Error(res);
+                throw res;
             }
         }
         else {
@@ -36,6 +36,7 @@ function request(input, config, type) {
         .catch(err => {
         var _a;
         (_a = currentConfig.error) === null || _a === void 0 ? void 0 : _a.call(currentConfig, err);
+        throw err;
     });
 }
 exports.request = request;
