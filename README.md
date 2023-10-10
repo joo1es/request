@@ -7,7 +7,10 @@ import { defineDefaultConfig } from '@oasis-end/request'
 
 defineDefaultConfig({
     method: 'post',
-    baseUrl: import.env.VITE_URL
+    baseUrl: import.env.VITE_URL,
+    error(err) {
+        alert(String(err))
+    }
 })
 ```
 
