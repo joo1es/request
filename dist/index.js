@@ -40,26 +40,6 @@ function request(input, config, type) {
     });
 }
 exports.request = request;
-request.get = (...args) => {
-    args[1] = Object.assign(Object.assign({}, (args[1] || {})), { method: 'get' });
-    return request(...args);
-};
-request.post = (...args) => {
-    args[1] = Object.assign(Object.assign({}, (args[1] || {})), { method: 'post' });
-    return request(...args);
-};
-request.put = (...args) => {
-    args[1] = Object.assign(Object.assign({}, (args[1] || {})), { method: 'put' });
-    return request(...args);
-};
-request.delete = (...args) => {
-    args[1] = Object.assign(Object.assign({}, (args[1] || {})), { method: 'delete' });
-    return request(...args);
-};
-request.patch = (...args) => {
-    args[1] = Object.assign(Object.assign({}, (args[1] || {})), { method: 'patch' });
-    return request(...args);
-};
 /**
  * Handle input url with config
  */

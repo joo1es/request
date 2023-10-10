@@ -6,14 +6,6 @@ export interface RequestJsonResponse<T extends any> {
     data: T;
 }
 export declare function request<T extends RequestJsonResponse<any>, U extends 'blob' | 'json' | 'arrayBuffer' = 'json'>(input: RequestInfo | URL, config?: RequestConfig, type?: U): Promise<U extends 'blob' ? Blob : U extends 'arrayBuffer' ? ArrayBuffer : T>;
-export declare namespace request {
-    export var get: (input: RequestInfo | URL, config?: RequestConfig | undefined, type?: "blob" | "json" | "arrayBuffer" | undefined) => Promise<RequestJsonResponse<any> | Blob | ArrayBuffer>;
-    export var post: (input: RequestInfo | URL, config?: RequestConfig | undefined, type?: "blob" | "json" | "arrayBuffer" | undefined) => Promise<RequestJsonResponse<any> | Blob | ArrayBuffer>;
-    export var put: (input: RequestInfo | URL, config?: RequestConfig | undefined, type?: "blob" | "json" | "arrayBuffer" | undefined) => Promise<RequestJsonResponse<any> | Blob | ArrayBuffer>;
-    var _a: (input: RequestInfo | URL, config?: RequestConfig | undefined, type?: "blob" | "json" | "arrayBuffer" | undefined) => Promise<RequestJsonResponse<any> | Blob | ArrayBuffer>;
-    export var patch: (input: RequestInfo | URL, config?: RequestConfig | undefined, type?: "blob" | "json" | "arrayBuffer" | undefined) => Promise<RequestJsonResponse<any> | Blob | ArrayBuffer>;
-    export { _a as delete };
-}
 /**
  * Handle input url with config
  */
