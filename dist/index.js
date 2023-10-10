@@ -40,6 +40,26 @@ function request(input, config, type) {
     });
 }
 exports.request = request;
+request.get = (...args) => {
+    const config = Object.assign(Object.assign({}, (args[1] || {})), { method: 'get' });
+    return request(args[0], config);
+};
+request.post = (...args) => {
+    const config = Object.assign(Object.assign({}, (args[1] || {})), { method: 'post' });
+    return request(args[0], config);
+};
+request.put = (...args) => {
+    const config = Object.assign(Object.assign({}, (args[1] || {})), { method: 'put' });
+    return request(args[0], config);
+};
+request.delete = (...args) => {
+    const config = Object.assign(Object.assign({}, (args[1] || {})), { method: 'delete' });
+    return request(args[0], config);
+};
+request.patch = (...args) => {
+    const config = Object.assign(Object.assign({}, (args[1] || {})), { method: 'patch' });
+    return request(args[0], config);
+};
 /**
  * Handle input url with config
  */

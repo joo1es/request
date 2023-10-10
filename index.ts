@@ -52,6 +52,27 @@ export function request<T extends RequestJsonResponse<any>, U extends 'blob' | '
         })
 }
 
+request.get = (...args: Parameters<typeof request>) => {
+    const config = { ...(args[1] || {}), method: 'get' } as RequestConfig
+    return request(args[0], config)
+}
+request.post = (...args: Parameters<typeof request>) => {
+    const config = { ...(args[1] || {}), method: 'post' } as RequestConfig
+    return request(args[0], config)
+}
+request.put = (...args: Parameters<typeof request>) => {
+    const config = { ...(args[1] || {}), method: 'put' } as RequestConfig
+    return request(args[0], config)
+}
+request.delete = (...args: Parameters<typeof request>) => {
+    const config = { ...(args[1] || {}), method: 'delete' } as RequestConfig
+    return request(args[0], config)
+}
+request.patch = (...args: Parameters<typeof request>) => {
+    const config = { ...(args[1] || {}), method: 'patch' } as RequestConfig
+    return request(args[0], config)
+}
+
 /**
  * Handle input url with config
  */
