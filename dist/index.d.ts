@@ -5,7 +5,7 @@ export interface RequestJsonResponse<T extends any> {
     [x: keyof any]: any;
     data: T;
 }
-export declare function request<T extends RequestJsonResponse<any>, U extends 'blob' | 'json' | 'arrayBuffer' = 'json'>(input: RequestInfo | URL, config?: RequestConfig, type?: U): Promise<U extends 'blob' ? Blob : U extends 'arrayBuffer' ? ArrayBuffer : T>;
+export declare function request<T extends any, U extends 'blob' | 'json' | 'arrayBuffer' = 'json'>(input: RequestInfo | URL, config?: RequestConfig, type?: U): Promise<U extends 'blob' ? Blob : U extends 'arrayBuffer' ? ArrayBuffer : RequestJsonResponse<T>>;
 /**
  * Handle input url with config
  */

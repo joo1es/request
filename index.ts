@@ -8,11 +8,11 @@ export interface RequestJsonResponse<T extends any> {
     data: T,
 }
 
-export function request<T extends RequestJsonResponse<any>, U extends 'blob' | 'json' | 'arrayBuffer' = 'json'>(
+export function request<T extends any, U extends 'blob' | 'json' | 'arrayBuffer' = 'json'>(
     input: RequestInfo | URL,
     config?: RequestConfig,
     type?: U
-): Promise<U extends 'blob' ? Blob : U extends 'arrayBuffer' ? ArrayBuffer : T> {
+): Promise<U extends 'blob' ? Blob : U extends 'arrayBuffer' ? ArrayBuffer : RequestJsonResponse<T>> {
     const currentConfig = {
         ...getDefaultConfig(),
         ...config,
