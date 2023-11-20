@@ -5,7 +5,7 @@ function request(input, config, type) {
     const currentConfig = Object.assign(Object.assign({}, getDefaultConfig()), config);
     // onBeforeRequest hook is used for like default headers setting.
     if (exports.beforeRequest)
-        (0, exports.beforeRequest)(currentConfig);
+        (0, exports.beforeRequest)(currentConfig, type || 'json');
     const inputResult = getInput(input, currentConfig);
     // body and data trans
     if (!currentConfig.body && currentConfig.data) {

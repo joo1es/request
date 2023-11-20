@@ -1,7 +1,7 @@
 import type { RequestConfig } from './types'
 
 export let defaultConfig: RequestConfig | (() => RequestConfig)
-export let beforeRequest: (config: RequestConfig) => void
+export let beforeRequest: (config: RequestConfig, type: 'blob' | 'json' | 'arrayBuffer') => void
 
 export interface RequestJsonResponse<T extends any> {
     [x: keyof any]: any,
@@ -18,7 +18,7 @@ export function request<T extends any, U extends 'blob' | 'json' | 'arrayBuffer'
         ...config,
     }
     // onBeforeRequest hook is used for like default headers setting.
-    if (beforeRequest) beforeRequest(currentConfig)
+    if (beforeRequest) beforeRequest(currentConfig, type || 'json')
 
     const inputResult = getInput(input, currentConfig)
 

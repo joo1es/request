@@ -1,6 +1,6 @@
 import type { RequestConfig } from './types';
 export declare let defaultConfig: RequestConfig | (() => RequestConfig);
-export declare let beforeRequest: (config: RequestConfig) => void;
+export declare let beforeRequest: (config: RequestConfig, type: 'blob' | 'json' | 'arrayBuffer') => void;
 export interface RequestJsonResponse<T extends any> {
     [x: keyof any]: any;
     data: T;
