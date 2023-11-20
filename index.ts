@@ -31,7 +31,7 @@ export function request<T extends any, U extends 'blob' | 'json' | 'arrayBuffer'
         }
     }
 
-    return fetch(inputResult, config)
+    return fetch(inputResult, currentConfig)
         .then(res => {
             return type === 'blob' ? res.blob() : type === 'arrayBuffer' ? res.arrayBuffer() : res.json()
         })

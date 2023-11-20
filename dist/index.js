@@ -16,7 +16,7 @@ function request(input, config, type) {
             currentConfig.body = JSON.stringify(currentConfig.data);
         }
     }
-    return fetch(inputResult, config)
+    return fetch(inputResult, currentConfig)
         .then(res => {
         return type === 'blob' ? res.blob() : type === 'arrayBuffer' ? res.arrayBuffer() : res.json();
     })
