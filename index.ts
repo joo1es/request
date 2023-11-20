@@ -5,7 +5,10 @@ export let beforeRequest: (config: RequestConfig, type: 'blob' | 'json' | 'array
 
 export interface RequestJsonResponse<T extends any> {
     [x: keyof any]: any,
+    code: number,
     data: T,
+    datas: T,
+    msg: string,
 }
 
 export function request<T extends any, U extends 'blob' | 'json' | 'arrayBuffer' = 'json'>(
