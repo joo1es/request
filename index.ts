@@ -88,7 +88,7 @@ export function defineDefaultConfig(config: RequestConfig | (() => RequestConfig
     defaultConfig = config
 }
 
-export function onBeforeRequest(func: (config: RequestConfig) => void) {
+export function onBeforeRequest(func: (config: RequestConfig, type: 'blob' | 'json' | 'arrayBuffer') => void) {
     beforeRequest = func
 }
 
