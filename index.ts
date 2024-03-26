@@ -1,7 +1,7 @@
 import type { RequestConfig } from './types'
 
 export let defaultConfig: RequestConfig | (() => RequestConfig)
-export let beforeRequest: (config: RequestConfig, type: 'blob' | 'json' | 'arrayBuffer') => void
+export let beforeRequest: (config: RequestConfig, type: RequestType) => void
 
 export interface RequestJsonResponse<T extends any> {
     [x: keyof any]: any,
@@ -11,11 +11,13 @@ export interface RequestJsonResponse<T extends any> {
     msg: string,
 }
 
-export function request<T extends any, U extends 'blob' | 'json' | 'arrayBuffer' = 'json'>(
+export type RequestType = 'blob' | 'json' | 'arrayBuffer' | 'fetch'
+export type RequestResult<T extends any, U extends RequestType> = Promise<U extends 'fetch' ? Response : U extends 'blob' ? Blob : U extends 'arrayBuffer' ? ArrayBuffer : RequestJsonResponse<T>>
+export function request<T extends any, U extends RequestType = 'json'>(
     input: RequestInfo | URL,
     config?: RequestConfig,
     type?: U
-): Promise<U extends 'blob' ? Blob : U extends 'arrayBuffer' ? ArrayBuffer : RequestJsonResponse<T>> {
+): RequestResult<T, U> {
     const currentConfig = {
         ...getDefaultConfig(),
         ...config,
@@ -36,10 +38,11 @@ export function request<T extends any, U extends 'blob' | 'json' | 'arrayBuffer'
 
     return fetch(inputResult, currentConfig)
         .then(res => {
+            if (type === 'fetch') return res
             return type === 'blob' ? res.blob() : type === 'arrayBuffer' ? res.arrayBuffer() : res.json()
         })
         .then(res => {
-            if (!(res instanceof Blob || res instanceof ArrayBuffer)) {
+            if (!(res instanceof Blob || res instanceof ArrayBuffer || res instanceof Response)) {
                 if (!currentConfig.success || currentConfig.success(res)) {
                     return res
                 } else {
@@ -88,7 +91,7 @@ export function defineDefaultConfig(config: RequestConfig | (() => RequestConfig
     defaultConfig = config
 }
 
-export function onBeforeRequest(func: (config: RequestConfig, type: 'blob' | 'json' | 'arrayBuffer') => void) {
+export function onBeforeRequest(func: (config: RequestConfig, type: RequestType) => void) {
     beforeRequest = func
 }
 
@@ -106,8 +109,11 @@ export const requestAutoImport = {
         'defaultConfig',
         'beforeRequest',
         'request',
+        'qRequest',
         'defineDefaultConfig',
         'onBeforeRequest',
         'getDefaultConfig'
     ]
 }
+
+export { qRequest } from './quick'

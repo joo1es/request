@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.requestAutoImport = exports.getDefaultConfig = exports.onBeforeRequest = exports.defineDefaultConfig = exports.getInput = exports.request = exports.beforeRequest = exports.defaultConfig = void 0;
+exports.qRequest = exports.requestAutoImport = exports.getDefaultConfig = exports.onBeforeRequest = exports.defineDefaultConfig = exports.getInput = exports.request = exports.beforeRequest = exports.defaultConfig = void 0;
 function request(input, config, type) {
     const currentConfig = Object.assign(Object.assign({}, getDefaultConfig()), config);
     // onBeforeRequest hook is used for like default headers setting.
@@ -18,10 +18,12 @@ function request(input, config, type) {
     }
     return fetch(inputResult, currentConfig)
         .then(res => {
+        if (type === 'fetch')
+            return res;
         return type === 'blob' ? res.blob() : type === 'arrayBuffer' ? res.arrayBuffer() : res.json();
     })
         .then(res => {
-        if (!(res instanceof Blob || res instanceof ArrayBuffer)) {
+        if (!(res instanceof Blob || res instanceof ArrayBuffer || res instanceof Response)) {
             if (!currentConfig.success || currentConfig.success(res)) {
                 return res;
             }
@@ -96,8 +98,11 @@ exports.requestAutoImport = {
         'defaultConfig',
         'beforeRequest',
         'request',
+        'qRequest',
         'defineDefaultConfig',
         'onBeforeRequest',
         'getDefaultConfig'
     ]
 };
+var quick_1 = require("./quick");
+Object.defineProperty(exports, "qRequest", { enumerable: true, get: function () { return quick_1.qRequest; } });
