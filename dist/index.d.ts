@@ -22,4 +22,4 @@ export declare function getDefaultConfig(): RequestConfig;
 export declare const requestAutoImport: {
     '@oasis-end/request': string[];
 };
-export { qRequest } from './quick';
+export { qRequest, defaultQConfig } from './quick';

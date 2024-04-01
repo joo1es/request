@@ -1,5 +1,17 @@
-import { type RequestType, type RequestResult } from './index';
+import { type RequestType } from './index';
 import type { RequestConfig } from './types';
+interface QRequestConfig {
+    router?: {
+        currentRoute?: {
+            value: {
+                meta?: {
+                    query?: Record<string, any>;
+                };
+            };
+        };
+    };
+}
+export declare let defaultQConfig: QRequestConfig | (() => QRequestConfig);
 /**
  * 快开相关封装
  * const res = qRequest().buttonId('test').exec()
@@ -23,10 +35,12 @@ export declare class QRequest {
     datasetIds(datasetIds: any): this;
     data(data: any): this;
     datas(datas: any): this;
-    query<T extends any, U extends RequestType = 'json'>(type?: U): RequestResult<T, U>;
-    exec<T extends any, U extends RequestType = 'json'>(type?: U): RequestResult<T, U>;
-    save<T extends any, U extends RequestType = 'json'>(type?: U): RequestResult<T, U>;
-    request<T extends any, U extends RequestType = 'json'>(url: string, type?: U): RequestResult<T, U>;
+    query<T extends any, U extends RequestType = 'json'>(type?: U): import("./index").RequestResult<T, U>;
+    exec<T extends any, U extends RequestType = 'json'>(type?: U): import("./index").RequestResult<T, U>;
+    save<T extends any, U extends RequestType = 'json'>(type?: U): import("./index").RequestResult<T, U>;
+    request<T extends any, U extends RequestType = 'json'>(url: string, type?: U): import("./index").RequestResult<T, U>;
     setData(key: string, value: any): this;
     assignData(data?: Record<string, any>): this;
 }
+export declare function defineDefaultQConfig(config: QRequestConfig | (() => QRequestConfig)): void;
+export {};

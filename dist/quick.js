@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.QRequest = exports.qRequest = void 0;
+exports.defineDefaultQConfig = exports.QRequest = exports.qRequest = exports.defaultQConfig = void 0;
 const index_1 = require("./index");
 /**
  * 快开相关封装
@@ -12,7 +12,16 @@ function qRequest(initData) {
 exports.qRequest = qRequest;
 class QRequest {
     constructor(initData) {
+        var _a, _b, _c;
         this.config = {};
+        /** 快开默认使用 post 方法 */
+        this.config.method = 'post';
+        if (exports.defaultQConfig) {
+            const config = typeof exports.defaultQConfig === 'function' ? (0, exports.defaultQConfig)() : exports.defaultQConfig;
+            if ((_c = (_b = (_a = config.router) === null || _a === void 0 ? void 0 : _a.currentRoute) === null || _b === void 0 ? void 0 : _b.value.meta) === null || _c === void 0 ? void 0 : _c.query) {
+                this.assignData(config.router.currentRoute.value.meta.query);
+            }
+        }
         return this.assignData(initData);
     }
     /** 设置请求方法，如 post, get 等 */
@@ -88,3 +97,7 @@ class QRequest {
     }
 }
 exports.QRequest = QRequest;
+function defineDefaultQConfig(config) {
+    exports.defaultQConfig = config;
+}
+exports.defineDefaultQConfig = defineDefaultQConfig;
