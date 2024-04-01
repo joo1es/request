@@ -1,5 +1,13 @@
-import { request, type RequestType, type RequestResult } from './index'
+import { request, type RequestType } from './index'
 import type { RequestConfig } from './types'
+
+interface QRequestConfig {
+    router?: {
+        currentRoute?: { value: { meta?: { query?: Record<string, any> } } }
+    }
+}
+
+export let defaultQConfig: QRequestConfig | (() => QRequestConfig)
 
 /**
  * 快开相关封装
@@ -12,6 +20,14 @@ export function qRequest(initData?: Record<string, any>) {
 export class QRequest {
     config: RequestConfig = {}
     constructor(initData?: Record<string, any>) {
+        /** 快开默认使用 post 方法 */
+        this.config.method = 'post'
+        if (defaultQConfig) {
+            const config = typeof defaultQConfig === 'function' ? defaultQConfig() : defaultQConfig
+            if (config.router?.currentRoute?.value.meta?.query) {
+                this.assignData(config.router.currentRoute.value.meta.query)
+            }
+        }
         return this.assignData(initData)
     }
     /** 设置请求方法，如 post, get 等 */
@@ -83,4 +99,8 @@ export class QRequest {
         Object.assign(this.config.data, data)
         return this
     }
+}
+
+export function defineDefaultQConfig(config: QRequestConfig | (() => QRequestConfig)) {
+    defaultQConfig = config
 }

@@ -116,4 +116,4 @@ export const requestAutoImport = {
     ]
 }
 
-export { qRequest } from './quick'
+export { qRequest, defaultQConfig } from './quick'
