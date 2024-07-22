@@ -66,23 +66,22 @@ export function getInput(input: RequestInfo | URL, currentConfig: RequestConfig)
     // Add baseUrl for url
     if (typeof inputResult === 'string') inputResult = `${currentConfig?.baseUrl || ''}${inputResult}`
     if (inputResult instanceof URL) inputResult = inputResult.toString()
-    if (currentConfig.params && typeof inputResult === 'string') {
-        let query = ''
+    if (currentConfig.params && (typeof inputResult === 'string' || inputResult instanceof URL)) {
+        const url = new URL(inputResult, location.href)
         if (typeof currentConfig.params === 'string') {
-            if (currentConfig.params.startsWith('?')) {
+            let query = ''
+            if (currentConfig.params.startsWith('?') || currentConfig.params.startsWith('&')) {
                 query = currentConfig.params.slice(1)
             } else {
                 query = currentConfig.params
             }
+            url.search += (url.search ? '&' : '?') + query
         } else {
-            query = Object.entries(currentConfig.params).map(([key, param]) => {
-                return `${key}=${param}`
-            }).join('&')
+            for (const [key, param] of Object.entries(currentConfig.params)) {
+                url.searchParams.append(key, param)
+            }
         }
-        if (query) {
-            const extraSymbol = inputResult.includes('?') ? '&' : '?'
-            inputResult += `${extraSymbol}${query}`
-        }
+        inputResult = url.toString()
     }
     return inputResult
 }

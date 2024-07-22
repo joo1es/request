@@ -1,6 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.defineDefaultQConfig = exports.defaultQConfig = exports.qRequest = exports.requestAutoImport = exports.getDefaultConfig = exports.onBeforeRequest = exports.defineDefaultConfig = exports.getInput = exports.request = exports.beforeRequest = exports.defaultConfig = void 0;
+exports.defineDefaultQConfig = exports.defaultQConfig = exports.qRequest = exports.requestAutoImport = exports.beforeRequest = exports.defaultConfig = void 0;
+exports.request = request;
+exports.getInput = getInput;
+exports.defineDefaultConfig = defineDefaultConfig;
+exports.onBeforeRequest = onBeforeRequest;
+exports.getDefaultConfig = getDefaultConfig;
 function request(input, config, type) {
     const currentConfig = Object.assign(Object.assign({}, getDefaultConfig()), config);
     // onBeforeRequest hook is used for like default headers setting.
@@ -41,7 +46,6 @@ function request(input, config, type) {
         throw err;
     });
 }
-exports.request = request;
 /**
  * Handle input url with config
  */
@@ -52,37 +56,33 @@ function getInput(input, currentConfig) {
         inputResult = `${(currentConfig === null || currentConfig === void 0 ? void 0 : currentConfig.baseUrl) || ''}${inputResult}`;
     if (inputResult instanceof URL)
         inputResult = inputResult.toString();
-    if (currentConfig.params && typeof inputResult === 'string') {
-        let query = '';
+    if (currentConfig.params && (typeof inputResult === 'string' || inputResult instanceof URL)) {
+        const url = new URL(inputResult, location.href);
         if (typeof currentConfig.params === 'string') {
-            if (currentConfig.params.startsWith('?')) {
+            let query = '';
+            if (currentConfig.params.startsWith('?') || currentConfig.params.startsWith('&')) {
                 query = currentConfig.params.slice(1);
             }
             else {
                 query = currentConfig.params;
             }
+            url.search += (url.search ? '&' : '?') + query;
         }
         else {
-            query = Object.entries(currentConfig.params).map(([key, param]) => {
-                return `${key}=${param}`;
-            }).join('&');
+            for (const [key, param] of Object.entries(currentConfig.params)) {
+                url.searchParams.append(key, param);
+            }
         }
-        if (query) {
-            const extraSymbol = inputResult.includes('?') ? '&' : '?';
-            inputResult += `${extraSymbol}${query}`;
-        }
+        inputResult = url.toString();
     }
     return inputResult;
 }
-exports.getInput = getInput;
 function defineDefaultConfig(config) {
     exports.defaultConfig = config;
 }
-exports.defineDefaultConfig = defineDefaultConfig;
 function onBeforeRequest(func) {
     exports.beforeRequest = func;
 }
-exports.onBeforeRequest = onBeforeRequest;
 function getDefaultConfig() {
     if (!exports.defaultConfig) {
         return {};
@@ -91,7 +91,6 @@ function getDefaultConfig() {
         return typeof exports.defaultConfig === 'function' ? (0, exports.defaultConfig)() : exports.defaultConfig;
     }
 }
-exports.getDefaultConfig = getDefaultConfig;
 /** RequestResolver for unplugin-auto-import */
 exports.requestAutoImport = {
     '@oasis-end/request': [

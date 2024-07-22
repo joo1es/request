@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.defineDefaultQConfig = exports.QRequest = exports.qRequest = exports.defaultQConfig = void 0;
+exports.QRequest = exports.defaultQConfig = void 0;
+exports.qRequest = qRequest;
+exports.defineDefaultQConfig = defineDefaultQConfig;
 const index_1 = require("./index");
 /**
  * 快开相关封装
@@ -9,7 +11,6 @@ const index_1 = require("./index");
 function qRequest(initData) {
     return new QRequest(initData);
 }
-exports.qRequest = qRequest;
 class QRequest {
     constructor(initData) {
         var _a, _b, _c;
@@ -100,4 +101,3 @@ exports.QRequest = QRequest;
 function defineDefaultQConfig(config) {
     exports.defaultQConfig = config;
 }
-exports.defineDefaultQConfig = defineDefaultQConfig;
