@@ -1,16 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.defineDefaultQConfig = exports.defaultQConfig = exports.qRequest = exports.requestAutoImport = exports.beforeRequest = exports.defaultConfig = void 0;
-exports.request = request;
-exports.getInput = getInput;
-exports.defineDefaultConfig = defineDefaultConfig;
-exports.onBeforeRequest = onBeforeRequest;
-exports.getDefaultConfig = getDefaultConfig;
-function request(input, config, type) {
+export let defaultConfig;
+export let beforeRequest;
+export function request(input, config, type) {
     const currentConfig = Object.assign(Object.assign({}, getDefaultConfig()), config);
     // onBeforeRequest hook is used for like default headers setting.
-    if (exports.beforeRequest)
-        (0, exports.beforeRequest)(currentConfig, type || 'json');
+    if (beforeRequest)
+        beforeRequest(currentConfig, type || 'json');
     const inputResult = getInput(input, currentConfig);
     // body and data trans
     if (!currentConfig.body && currentConfig.data) {
@@ -49,7 +43,7 @@ function request(input, config, type) {
 /**
  * Handle input url with config
  */
-function getInput(input, currentConfig) {
+export function getInput(input, currentConfig) {
     let inputResult = input;
     // Add baseUrl for url
     if (typeof inputResult === 'string')
@@ -77,22 +71,22 @@ function getInput(input, currentConfig) {
     }
     return inputResult;
 }
-function defineDefaultConfig(config) {
-    exports.defaultConfig = config;
+export function defineDefaultConfig(config) {
+    defaultConfig = config;
 }
-function onBeforeRequest(func) {
-    exports.beforeRequest = func;
+export function onBeforeRequest(func) {
+    beforeRequest = func;
 }
-function getDefaultConfig() {
-    if (!exports.defaultConfig) {
+export function getDefaultConfig() {
+    if (!defaultConfig) {
         return {};
     }
     else {
-        return typeof exports.defaultConfig === 'function' ? (0, exports.defaultConfig)() : exports.defaultConfig;
+        return typeof defaultConfig === 'function' ? defaultConfig() : defaultConfig;
     }
 }
 /** RequestResolver for unplugin-auto-import */
-exports.requestAutoImport = {
+export const requestAutoImport = {
     '@oasis-end/request': [
         'defaultConfig',
         'beforeRequest',
@@ -103,7 +97,4 @@ exports.requestAutoImport = {
         'getDefaultConfig'
     ]
 };
-var quick_1 = require("./quick");
-Object.defineProperty(exports, "qRequest", { enumerable: true, get: function () { return quick_1.qRequest; } });
-Object.defineProperty(exports, "defaultQConfig", { enumerable: true, get: function () { return quick_1.defaultQConfig; } });
-Object.defineProperty(exports, "defineDefaultQConfig", { enumerable: true, get: function () { return quick_1.defineDefaultQConfig; } });
+export { qRequest, defaultQConfig, defineDefaultQConfig } from './quick';

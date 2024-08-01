@@ -1,24 +1,20 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.QRequest = exports.defaultQConfig = void 0;
-exports.qRequest = qRequest;
-exports.defineDefaultQConfig = defineDefaultQConfig;
-const index_1 = require("./index");
+import { request } from './index';
+export let defaultQConfig;
 /**
  * 快开相关封装
  * const res = qRequest().buttonId('test').exec()
  */
-function qRequest(initData) {
+export function qRequest(initData) {
     return new QRequest(initData);
 }
-class QRequest {
+export class QRequest {
     constructor(initData) {
         var _a, _b, _c;
         this.config = {};
         /** 快开默认使用 post 方法 */
         this.config.method = 'post';
-        if (exports.defaultQConfig) {
-            const config = typeof exports.defaultQConfig === 'function' ? (0, exports.defaultQConfig)() : exports.defaultQConfig;
+        if (defaultQConfig) {
+            const config = typeof defaultQConfig === 'function' ? defaultQConfig() : defaultQConfig;
             if ((_c = (_b = (_a = config.router) === null || _a === void 0 ? void 0 : _a.currentRoute) === null || _b === void 0 ? void 0 : _b.value.meta) === null || _c === void 0 ? void 0 : _c.query) {
                 this.assignData(config.router.currentRoute.value.meta.query);
             }
@@ -82,7 +78,7 @@ class QRequest {
         return this.request('/core/busi/save', type);
     }
     request(url, type) {
-        return (0, index_1.request)(url, this.config, type);
+        return request(url, this.config, type);
     }
     setData(key, value) {
         if (!this.config.data)
@@ -97,7 +93,6 @@ class QRequest {
         return this;
     }
 }
-exports.QRequest = QRequest;
-function defineDefaultQConfig(config) {
-    exports.defaultQConfig = config;
+export function defineDefaultQConfig(config) {
+    defaultQConfig = config;
 }
