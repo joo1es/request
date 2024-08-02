@@ -80,6 +80,7 @@ export function getInput(input: RequestInfo | URL, currentConfig: RequestConfig)
             url.search += (url.search ? '&' : '?') + query
         } else {
             for (const [key, param] of Object.entries(currentConfig.params)) {
+                if (typeof param === 'undefined') continue
                 url.searchParams.append(key, param)
             }
         }
