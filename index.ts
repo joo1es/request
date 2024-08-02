@@ -1,7 +1,9 @@
 import type { RequestConfig } from './types'
 
-export let defaultConfig: RequestConfig | (() => RequestConfig)
-export let beforeRequest: (config: RequestConfig, type: RequestType) => void
+export const _config: {
+    defaultConfig?: RequestConfig | (() => RequestConfig),
+    beforeRequest?: (config: RequestConfig, type: RequestType) => void
+} = {}
 
 export interface RequestJsonResponse<T extends any> {
     [x: keyof any]: any,
@@ -23,7 +25,7 @@ export function request<T extends any, U extends RequestType = 'json'>(
         ...config,
     }
     // onBeforeRequest hook is used for like default headers setting.
-    if (beforeRequest) beforeRequest(currentConfig, type || 'json')
+    if (_config.beforeRequest) _config.beforeRequest(currentConfig, type || 'json')
 
     const inputResult = getInput(input, currentConfig)
 
@@ -87,18 +89,18 @@ export function getInput(input: RequestInfo | URL, currentConfig: RequestConfig)
 }
 
 export function defineDefaultConfig(config: RequestConfig | (() => RequestConfig)) {
-    defaultConfig = config
+    _config.defaultConfig = config
 }
 
 export function onBeforeRequest(func: (config: RequestConfig, type: RequestType) => void) {
-    beforeRequest = func
+    _config.beforeRequest = func
 }
 
 export function getDefaultConfig() {
-    if (!defaultConfig) {
+    if (!_config.defaultConfig) {
         return {}
     } else {
-        return typeof defaultConfig === 'function' ? defaultConfig() : defaultConfig
+        return typeof _config.defaultConfig === 'function' ? _config.defaultConfig() : _config.defaultConfig
     }
 }
 

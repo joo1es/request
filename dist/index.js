@@ -1,10 +1,9 @@
-export let defaultConfig;
-export let beforeRequest;
+export const _config = {};
 export function request(input, config, type) {
     const currentConfig = Object.assign(Object.assign({}, getDefaultConfig()), config);
     // onBeforeRequest hook is used for like default headers setting.
-    if (beforeRequest)
-        beforeRequest(currentConfig, type || 'json');
+    if (_config.beforeRequest)
+        _config.beforeRequest(currentConfig, type || 'json');
     const inputResult = getInput(input, currentConfig);
     // body and data trans
     if (!currentConfig.body && currentConfig.data) {
@@ -72,17 +71,17 @@ export function getInput(input, currentConfig) {
     return inputResult;
 }
 export function defineDefaultConfig(config) {
-    defaultConfig = config;
+    _config.defaultConfig = config;
 }
 export function onBeforeRequest(func) {
-    beforeRequest = func;
+    _config.beforeRequest = func;
 }
 export function getDefaultConfig() {
-    if (!defaultConfig) {
+    if (!_config.defaultConfig) {
         return {};
     }
     else {
-        return typeof defaultConfig === 'function' ? defaultConfig() : defaultConfig;
+        return typeof _config.defaultConfig === 'function' ? _config.defaultConfig() : _config.defaultConfig;
     }
 }
 /** RequestResolver for unplugin-auto-import */
